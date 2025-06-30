@@ -1,0 +1,39 @@
+networks:
+  db:
+services:
+  api:
+    container_name: freelog-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - db
+    environment:
+      - DATABASE_URL=postgresql://postgres:freelog-pass@db/freelog-local
+      - DB_NAME=booking-local
+      - DB_USER=postgres
+      - DB_HOST=db
+      - DB_PASS=booking-pass
+      - DB_PORT=5432
+      - API_PORT=8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    container_name: freelog-db
+    networks:
+        - db
+    image: postgres:alpine
+    environment:
+      POSTGRES_DB: freelog-local
+      POSTGRES_PASSWORD: freelog-pass
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d freelog-local -U postgres"]
+      interval: 3s
+      timeout: 5s
+      retries: 5
+    restart: always
