@@ -2,30 +2,44 @@ package main
 
 import (
 	"context"
+	"fmt"
+	"log"
 
+	"github.com/freelog-projeto1/backend-freelog/internal/config"
 	"github.com/freelog-projeto1/backend-freelog/internal/handlers"
 	"github.com/freelog-projeto1/backend-freelog/internal/repository"
 	"github.com/freelog-projeto1/backend-freelog/internal/usecase"
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/joho/godotenv"
 )
 
 func main() {
-    ctx := context.Background()
-    db, err := pgxpool.New(ctx, "postgres://user:password@localhost:5432/mydb")
-    if err != nil {
-        panic("Unable to connect to database: " + err.Error())
-    }
-    defer db.Close()
+	ctx := context.Background()
 
-    clientsRepository := repository.NewClientsRepository()
-    clientsUsecase := usecase.NewClientsUsecase(clientsRepository)
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("Error loading env file: %v", err)
+	}
 
-    router := gin.Default()
+	cfg := config.New()
+	if err != nil {
+		log.Fatalf("Error loading cfg: %v", err)
+	}
 
-    router.POST("/clients", handlers.CreateClient(clientsUsecase))
+	db, err := pgxpool.New(ctx, cfg.DBConfig.DBUrl)
+	if err != nil {
+        log.Fatalf("Failed to connect to database: %v", err)
+	}
+	defer db.Close()
 
-    if err := router.Run(":8080"); err != nil {
-        panic("Failed to start server: " + err.Error())
-    }
+	clientsRepository := repository.NewClientsRepository()
+	clientsUsecase := usecase.NewClientsUsecase(clientsRepository)
+
+	router := gin.Default()
+	router.POST("/clients", handlers.CreateClient(clientsUsecase))
+
+	if err := router.Run(fmt.Sprintf(":%s", cfg.ServerConfig.Port)); err != nil {
+        log.Fatalf("Failed to start server: %v", err)
+	}
 }
