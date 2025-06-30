@@ -9,15 +9,10 @@ services:
     networks:
       - db
     environment:
-      - DATABASE_URL=postgresql://postgres:freelog-pass@db/freelog-local
-      - DB_NAME=booking-local
-      - DB_USER=postgres
-      - DB_HOST=db
-      - DB_PASS=booking-pass
-      - DB_PORT=5432
-      - API_PORT=8000
+      - DATABASE_URL=postgresql://postgres:freelog-pass@db:5432/freelog-local
+      - API_PORT=8080
     ports:
-      - "8000:8000"
+      - "8080:8080"
     depends_on:
       db:
         condition: service_healthy
