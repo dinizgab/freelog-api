@@ -9,7 +9,7 @@ create table if not exists clients (
     phone varchar(50),
     address text,
     notes text,
-    is_active boolean default true,
+    is_active boolean default true
 );
 -- +goose StatementEnd
 
