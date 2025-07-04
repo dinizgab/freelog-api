@@ -10,7 +10,6 @@ import (
 	"github.com/freelog-projeto1/backend-freelog/internal/middleware"
 	"github.com/freelog-projeto1/backend-freelog/internal/repository"
 	"github.com/freelog-projeto1/backend-freelog/internal/usecase"
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/supabase-community/supabase-go"
