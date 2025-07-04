@@ -7,11 +7,13 @@ import (
 
 	"github.com/freelog-projeto1/backend-freelog/internal/config"
 	"github.com/freelog-projeto1/backend-freelog/internal/handlers"
+	"github.com/freelog-projeto1/backend-freelog/internal/middleware"
 	"github.com/freelog-projeto1/backend-freelog/internal/repository"
 	"github.com/freelog-projeto1/backend-freelog/internal/usecase"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/supabase-community/supabase-go"
 )
 
 func main() {
@@ -35,19 +37,18 @@ func main() {
 		log.Fatalf("Failed to ping database: %v", err)
 	}
 
+    supabaseClient, err := supabase.NewClient(cfg.SupabaseConfig.ProjectURL, cfg.SupabaseConfig.APIKey, nil)
+
 	clientsRepository := repository.NewClientsRepository(db)
 	clientsUsecase := usecase.NewClientsUsecase(clientsRepository)
 
 	router := gin.Default()
-	router.Use(cors.New(cors.Config{
-		AllowOrigins: []string{"http://localhost:3000"},
-		AllowMethods: []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
-		AllowHeaders: []string{
-			"Origin", "Authorization", "Content-Type", "Accept", "Access-Control-Request-Headers",
-		},
-		ExposeHeaders:    []string{"Content-Length"},
-		AllowCredentials: true,
-	}))
+	router.Use(middleware.CORSMiddleware())
+
+    router.GET("/login/google", handlers.GoogleLogin(supabaseClient))
+
+	authMw := middleware.Auth(supabaseClient)
+    router.Use(authMw)
 
 	router.POST("/clients", handlers.CreateClient(clientsUsecase))
     router.GET("/clients", handlers.ListClients(clientsUsecase))
