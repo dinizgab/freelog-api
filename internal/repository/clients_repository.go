@@ -23,15 +23,16 @@ var (
     createClientQuery string
 )
 
-func NewClientsRepository() ClientsRepository {
-    return &clientsRepositoryImpl{}
+func NewClientsRepository(db *pgxpool.Pool) ClientsRepository {
+    return &clientsRepositoryImpl{
+        db: db,
+    }
 }
 
 func (r *clientsRepositoryImpl) CreateClient(ctx context.Context, client entity.Client) error {
     _, err := r.db.Exec(
         ctx,
         createClientQuery,
-        client.ID,
         client.CompanyName,
         client.ContactName,
         client.ContactTitle,

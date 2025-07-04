@@ -19,7 +19,6 @@ RUN apk add --no-cache ca-certificates && update-ca-certificates
 WORKDIR /app
 COPY --from=builder /bin/app /app/app
 
-ENV PORT=8000
 EXPOSE 8000
 
 RUN adduser -D -u 10001 appuser
