@@ -11,6 +11,7 @@ import (
 type (
     ClientsRepository interface {
         CreateClient(context.Context, entity.Client) error
+        ListClients(context.Context, string) ([]entity.Client, error)
     }
 
     clientsRepositoryImpl struct {
@@ -21,6 +22,8 @@ type (
 var (
     //go:embed sql/clients/create_client.sql
     createClientQuery string
+    //go:embed sql/clients/list_clients.sql
+    listClientsQuery string
 )
 
 func NewClientsRepository(db *pgxpool.Pool) ClientsRepository {
@@ -44,4 +47,33 @@ func (r *clientsRepositoryImpl) CreateClient(ctx context.Context, client entity.
     )
 
     return err
+}
+
+func (r *clientsRepositoryImpl) ListClients(ctx context.Context, freelancerId string) ([]entity.Client, error) {
+    rows, err := r.db.Query(ctx, listClientsQuery, freelancerId)
+    if err != nil {
+        return nil, err
+    }
+    defer rows.Close()
+
+    var clients []entity.Client
+    for rows.Next() {
+        var client entity.Client
+        if err := rows.Scan(
+            &client.ID,
+            &client.CompanyName,
+            &client.ContactName,
+            &client.ContactTitle,
+            &client.Email,
+            &client.Phone,
+            &client.Address,
+            &client.Notes,
+            &client.IsActive,
+        ); err != nil {
+            return nil, err
+        }
+        clients = append(clients, client)
+    }
+
+    return clients, nil
 }

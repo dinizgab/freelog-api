@@ -10,6 +10,7 @@ import (
 type (
     ClientsUsecase interface {
         CreateClient(context.Context, entity.Client) error
+        ListClients(context.Context) ([]entity.Client, error)
     }
 
     clientsUsecaseImpl struct {
@@ -25,4 +26,9 @@ func NewClientsUsecase(clientsRepository repository.ClientsRepository) ClientsUs
 
 func (u *clientsUsecaseImpl) CreateClient(ctx context.Context, client entity.Client) error {
     return u.clientsRepository.CreateClient(ctx, client)
+}
+
+func (u *clientsUsecaseImpl) ListClients(ctx context.Context) ([]entity.Client, error) {
+    // TODO - Get freelancerId from context or session
+    return u.clientsRepository.ListClients(ctx, "")
 }

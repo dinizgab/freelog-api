@@ -50,6 +50,7 @@ func main() {
 	}))
 
 	router.POST("/clients", handlers.CreateClient(clientsUsecase))
+    router.GET("/clients", handlers.ListClients(clientsUsecase))
 
 	if err := router.Run(fmt.Sprintf(":%s", cfg.ServerConfig.Port)); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
