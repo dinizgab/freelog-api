@@ -29,6 +29,7 @@ func (u *clientsUsecaseImpl) CreateClient(ctx context.Context, client entity.Cli
 }
 
 func (u *clientsUsecaseImpl) ListClients(ctx context.Context) ([]entity.Client, error) {
-    // TODO - Get freelancerId from context or session
-    return u.clientsRepository.ListClients(ctx, "")
+    freelancerId := ctx.Value("freelancer_id").(string)
+
+    return u.clientsRepository.ListClients(ctx, freelancerId)
 }

@@ -44,6 +44,7 @@ func (r *clientsRepositoryImpl) CreateClient(ctx context.Context, client entity.
         client.Address,
         client.Notes,
         client.IsActive,
+        client.FreelancerId,
     )
 
     return err

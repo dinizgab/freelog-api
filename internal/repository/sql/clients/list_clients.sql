@@ -10,4 +10,5 @@ SELECT
     is_active
 FROM
     clients
--- TODO - Add freelancer id filter
+WHERE
+    freelancer_id = $1

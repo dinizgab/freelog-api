@@ -6,7 +6,8 @@ insert into clients (
     phone,
     address,
     notes,
-    is_active
+    is_active,
+    freelancer_id
 ) values (
     $1,
     $2,
@@ -15,5 +16,6 @@ insert into clients (
     $5,
     $6,
     $7,
-    $8
+    $8,
+    $9
 ) 
