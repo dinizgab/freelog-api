@@ -1,0 +1,65 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: freelog-api
+    depends_on:
+      - db
+      - azurite
+    environment:
+      PORT: 8080
+      DB_DIALECT: postgres
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASS: postgrespw
+      DB_NAME: freelog
+      SMTP_HOST: smtp.gmail.com
+      SMTP_PORT: 587
+      SMTP_USER: "samuelephael@gmail.com"
+      SMTP_PASS: "qumx orej wihe lqkc"
+
+      URL_FRONT: http://localhost:3000
+      JWT_SECRET: Qozg5bhXEt
+      AZURE_STORAGE_CONNECTION_STRING: >
+        DefaultEndpointsProtocol=https;
+        AccountName=projeto1;
+        AccountKey=XCa6rTVqwLefoGSigZntVUvIKFlp+WPK3g1ARNMaicQ/oadfiQwEKAjHx9XqsBKox4hpBInrC8hI+AStuizAPQ==;
+        EndpointSuffix=core.windows.net
+      AZURE_STORAGE_CONTAINER_NAME: deliveries
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+  db:
+    image: postgres:latest
+    container_name: freelog-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespw
+      POSTGRES_DB: freelog
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite
+    container_name: freelog-azurite
+    command: >
+      azurite-blob
+      --blobHost 0.0.0.0
+      --blobPort 10000
+      --location /data
+      --loose
+    ports:
+      - "10000:10000"
+    volumes:
+      - azurite:/data
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  azurite:
