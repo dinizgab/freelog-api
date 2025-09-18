@@ -26,9 +26,9 @@ class ClientController {
         }
     }
 
-    async getAllClients(response: Response): Promise<Response> {
+    async getAllClients(request: Request, response: Response): Promise<Response> {
         try {
-            const users = await ClientService.getAllClients();
+            const users = await ClientService.getAllClients(parseInt(request.params.id));
             return response.status(200).json(users);
         } catch (error) {
             return response.status(500).json({ error: 'Erro ao listar clientes' });

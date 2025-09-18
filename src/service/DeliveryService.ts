@@ -1,12 +1,12 @@
 import { Delivery, DeliveryCreationAttributes } from "../model/Delivery";
 import { FileUploadService } from "./FileUploadService";
-import {DeliveryFile} from "../model/DeliveryFile";
+import { DeliveryFile } from "../model/DeliveryFile";
 import jwt from "jsonwebtoken";
-import {DeliveryRepository} from "../repository/deliveryRepository";
-import {EmailService} from "./EmailService";
-import {User} from "../model/User";
-import {Project} from "../model/Project";
-import {Client} from "../model/Client";
+import { DeliveryRepository } from "../repository/deliveryRepository";
+import { EmailService } from "./EmailService";
+import { User } from "../model/User";
+import { Project } from "../model/Project";
+import { Client } from "../model/Client";
 
 interface CreateDeliveryDTO {
     projectId: number;
@@ -44,6 +44,10 @@ export class DeliveryService {
 
     async getDeliveryById(id: number) {
         return await Delivery.findByPk(id);
+    }
+
+    async getDeliveryFileById(id: number) {
+        return await DeliveryFile.findByPk(id);
     }
 
     async createDelivery(

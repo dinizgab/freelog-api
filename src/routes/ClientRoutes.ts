@@ -33,7 +33,7 @@ const router = Router();
  *      500:
  *        description: Erro ao criar cliente.
  */
-router.post('/clients', authenticate, (request, response) => {ClientController.createClient(request, response);});
+router.post('/clients', authenticate, (request, response) => { ClientController.createClient(request, response); });
 
 /**
  * @swagger
@@ -62,7 +62,7 @@ router.post('/clients', authenticate, (request, response) => {ClientController.c
  *      500:
  *        description: Erro ao buscar cliente.
  */
-router.get('/clients/:id', authenticate, (request, response) => {ClientController.getClientById(request, response);});
+router.get('/clients/:id', authenticate, (request, response) => { ClientController.getClientById(request, response); });
 
 /**
  * @swagger
@@ -83,7 +83,7 @@ router.get('/clients/:id', authenticate, (request, response) => {ClientControlle
  *      500:
  *        description: Erro ao listar clientes.
  */
-router.get('/clients', authenticate, (request, response) => {ClientController.getAllClients(response);});
+router.get('/clients/:id', authenticate, (request, response) => { ClientController.getAllClients(request, response); });
 
 /**
  * @swagger
@@ -118,7 +118,7 @@ router.get('/clients', authenticate, (request, response) => {ClientController.ge
  *      500:
  *        description: Erro ao atualizar cliente.
  */
-router.put('/clients/:id', authenticate, authorizeUser, (request, response) => {ClientController.updateClient(request, response);});
+router.put('/clients/:id', authenticate, authorizeUser, (request, response) => { ClientController.updateClient(request, response); });
 
 /**
  * @swagger
@@ -143,6 +143,6 @@ router.put('/clients/:id', authenticate, authorizeUser, (request, response) => {
  *      500:
  *        description: Erro ao remover cliente.
  */
-router.delete('/clients/:id', authenticate, authorizeUser, (request, response) => {ClientController.deleteClient(request, response);});
+router.delete('/clients/:id', authenticate, authorizeUser, (request, response) => { ClientController.deleteClient(request, response); });
 
 export default router;

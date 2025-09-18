@@ -86,27 +86,27 @@ export class DeliveryController {
     async downloadFile(req: Request, res: Response) {
         try {
             const { id } = req.params;
-            const delivery = await deliveryService.getDeliveryById(Number(id));
-            
+            const delivery = await deliveryService.getDeliveryFileById(Number(id));
+
             if (!delivery) {
                 return res.status(404).json({ message: "Delivery not found" });
             }
-            
-            if (!delivery.delivery_file_url) {
+
+            if (!delivery.url) {
                 return res.status(404).json({ message: "No file found for this delivery" });
             }
-            
+
             // Fazer download direto do arquivo
-            const fileData = await fileUploadService.downloadFile(delivery.delivery_file_url);
-            
+            const fileData = await fileUploadService.downloadFile(delivery.url);
+
             // Configurar headers para download
             res.setHeader('Content-Type', fileData.contentType);
             res.setHeader('Content-Disposition', `attachment; filename="${fileData.fileName}"`);
             res.setHeader('Cache-Control', 'no-cache');
-            
+
             // Fazer pipe do stream para a resposta
             fileData.stream.pipe(res);
-            
+
         } catch (error) {
             console.error("Download error:", error);
             res.status(500).json({ error: (error as Error).message });
@@ -117,18 +117,18 @@ export class DeliveryController {
         try {
             const { id } = req.params;
             const delivery = await deliveryService.getDeliveryById(Number(id));
-            
+
             if (!delivery) {
                 return res.status(404).json({ message: "Delivery not found" });
             }
-            
+
             if (!delivery.delivery_file_url) {
                 return res.status(404).json({ message: "No file found for this delivery" });
             }
-            
+
             // Gerar URL com SAS token para acesso temporário (24 horas)
             const downloadUrl = await fileUploadService.generateSasUrl(delivery.delivery_file_url, 24);
-            
+
             res.status(200).json({
                 success: true,
                 downloadUrl: downloadUrl,
