@@ -83,7 +83,7 @@ router.get('/clients/:id', authenticate, (request, response) => { ClientControll
  *      500:
  *        description: Erro ao listar clientes.
  */
-router.get('/clients/:id', authenticate, (request, response) => { ClientController.getAllClients(request, response); });
+router.get('/clients', authenticate, (request, response) => { ClientController.getAllClients(request, response); });
 
 /**
  * @swagger

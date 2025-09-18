@@ -28,6 +28,7 @@ class ClientController {
 
     async getAllClients(request: Request, response: Response): Promise<Response> {
         try {
+            const freelancerId = request.query.freelancerId
             const users = await ClientService.getAllClients(parseInt(request.params.id));
             return response.status(200).json(users);
         } catch (error) {
