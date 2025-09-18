@@ -7,6 +7,27 @@ services:
     depends_on:
       - db
       - azurite
+    environment:
+      PORT: 8080
+      DB_DIALECT: postgres
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASS: postgrespw
+      DB_NAME: freelog
+      SMTP_HOST: smtp.gmail.com
+      SMTP_PORT: 587
+      SMTP_USER: "samuelephael@gmail.com"
+      SMTP_PASS: "qumx orej wihe lqkc"
+
+      URL_FRONT: http://localhost:3000
+      JWT_SECRET: Qozg5bhXEt
+      AZURE_STORAGE_CONNECTION_STRING: >
+        DefaultEndpointsProtocol=https;
+        AccountName=projeto1;
+        AccountKey=XCa6rTVqwLefoGSigZntVUvIKFlp+WPK3g1ARNMaicQ/oadfiQwEKAjHx9XqsBKox4hpBInrC8hI+AStuizAPQ==;
+        EndpointSuffix=core.windows.net
+      AZURE_STORAGE_CONTAINER_NAME: deliveries
     ports:
       - "8080:8080"
     restart: unless-stopped
