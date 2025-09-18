@@ -28,8 +28,8 @@ class ClientController {
 
     async getAllClients(request: Request, response: Response): Promise<Response> {
         try {
-            const freelancerId = request.query.freelancerId
-            const users = await ClientService.getAllClients(parseInt(request.params.id));
+            const freelancerId = Number(request.query.freelancerId)
+            const users = await ClientService.getAllClients(freelancerId);
             return response.status(200).json(users);
         } catch (error) {
             return response.status(500).json({ error: 'Erro ao listar clientes' });
