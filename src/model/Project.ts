@@ -1,7 +1,8 @@
-import {DataTypes, Model, Optional} from "sequelize";
+import { DataTypes, Model, Optional } from "sequelize";
 import sequelize from "../config/database";
-import {Client} from "./Client";
-import {User} from "./User";
+import { Client } from "./Client";
+import { User } from "./User";
+import { Delivery } from "./Delivery";
 
 
 
@@ -19,7 +20,7 @@ interface ProjetcAttributes {
     status: ProjectStatus;
 }
 
-interface ProjectCreationAttributes extends Optional<ProjetcAttributes, any> {}
+interface ProjectCreationAttributes extends Optional<ProjetcAttributes, any> { }
 
 export class Project extends Model<ProjetcAttributes, ProjectCreationAttributes> implements ProjetcAttributes {
     public id!: string;
@@ -37,44 +38,44 @@ export class Project extends Model<ProjetcAttributes, ProjectCreationAttributes>
 
 Project.init(
     {
-       id: {
-           type: DataTypes.INTEGER,
-           autoIncrement: true,
-           primaryKey: true,
-       },
+        id: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true,
+        },
         freelancer_id: {
-           type: DataTypes.INTEGER,
+            type: DataTypes.INTEGER,
             allowNull: false,
-            validate:{
-               notEmpty: true,
+            validate: {
+                notEmpty: true,
             },
         },
         client_id: {
-           type: DataTypes.INTEGER,
+            type: DataTypes.INTEGER,
             allowNull: false,
             validate: {
-               notEmpty: true,
+                notEmpty: true,
             },
         },
         name: {
-           type: DataTypes.STRING,
+            type: DataTypes.STRING,
             allowNull: false,
             validate: {
-               notEmpty: true,
+                notEmpty: true,
             },
         },
         description: {
-           type: DataTypes.TEXT,
+            type: DataTypes.TEXT,
             allowNull: false,
             validate: {
-               notEmpty: true,
+                notEmpty: true,
             },
         },
         start_date: {
-           type: DataTypes.DATEONLY,
+            type: DataTypes.DATEONLY,
             allowNull: false,
             validate: {
-               notEmpty: true,
+                notEmpty: true,
                 isDate: true,
             },
         },
@@ -87,15 +88,15 @@ Project.init(
             },
         },
         budget: {
-           type: DataTypes.BIGINT,
+            type: DataTypes.BIGINT,
             allowNull: false,
             validate: {
-               notEmpty: true,
+                notEmpty: true,
                 isInt: true,
             },
         },
         status: {
-           type: DataTypes.ENUM('draft', 'ongoing', 'completed', 'cancelled'),
+            type: DataTypes.ENUM('draft', 'ongoing', 'completed', 'cancelled'),
             allowNull: false,
             defaultValue: 'draft',
         },
@@ -107,7 +108,7 @@ Project.init(
         tableName: "projects",
         timestamps: false,
     }
-    );
+);
 
 Project.belongsTo(User, {
     foreignKey: 'freelancer_id',
@@ -121,4 +122,9 @@ Project.belongsTo(Client, {
 }
 );
 
+Project.hasMany(Delivery, {
+    foreignKey: "project_id",
+    as: "deliveries",
+    onDelete: "CASCADE"
+})
 

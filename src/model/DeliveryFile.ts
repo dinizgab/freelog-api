@@ -11,12 +11,11 @@ interface DeliveryFileAttributes {
 }
 
 export interface DeliveryFileCreationAttributes
-    extends Optional<DeliveryFileAttributes, "id"> {}
+    extends Optional<DeliveryFileAttributes, "id"> { }
 
 export class DeliveryFile
     extends Model<DeliveryFileAttributes, DeliveryFileCreationAttributes>
-    implements DeliveryFileAttributes
-{
+    implements DeliveryFileAttributes {
     public id!: number;
     public deliveryId!: number;
     public name!: string;
@@ -35,5 +34,5 @@ DeliveryFile.init(
     { sequelize, modelName: "delivery_files", timestamps: false },
 );
 
-Delivery.hasMany(DeliveryFile, { foreignKey: "deliveryId", as: "files" });
+Delivery.hasMany(DeliveryFile, { foreignKey: "deliveryId", as: "files", onDelete: "CASCADE" });
 DeliveryFile.belongsTo(Delivery, { foreignKey: "deliveryId" });
