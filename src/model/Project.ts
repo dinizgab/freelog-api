@@ -56,6 +56,7 @@ Project.init(
             validate: {
                 notEmpty: true,
             },
+            onDelete: "CASCADE"
         },
         name: {
             type: DataTypes.STRING,

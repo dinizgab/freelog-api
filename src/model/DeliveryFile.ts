@@ -1,6 +1,6 @@
-import { DataTypes, Model, Optional } from "sequelize";
+import {DataTypes, Model, Optional} from "sequelize";
 import sequelize from "../config/database";
-import { Delivery } from "./Delivery";
+import {Delivery} from "./Delivery";
 
 interface DeliveryFileAttributes {
     id: number;
@@ -11,7 +11,8 @@ interface DeliveryFileAttributes {
 }
 
 export interface DeliveryFileCreationAttributes
-    extends Optional<DeliveryFileAttributes, "id"> { }
+    extends Optional<DeliveryFileAttributes, "id"> {
+}
 
 export class DeliveryFile
     extends Model<DeliveryFileAttributes, DeliveryFileCreationAttributes>
@@ -25,13 +26,15 @@ export class DeliveryFile
 
 DeliveryFile.init(
     {
-        id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-        deliveryId: { type: DataTypes.INTEGER, allowNull: false },
-        name: { type: DataTypes.STRING, allowNull: false },
-        size: { type: DataTypes.INTEGER, allowNull: false },
-        url: { type: DataTypes.STRING, allowNull: false },
+        id: {type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true},
+        deliveryId: {
+            type: DataTypes.INTEGER, allowNull: false, onDelete: "CASCADE"
+        },
+        name: {type: DataTypes.STRING, allowNull: false},
+        size: {type: DataTypes.INTEGER, allowNull: false},
+        url: {type: DataTypes.STRING, allowNull: false},
     },
-    { sequelize, modelName: "delivery_files", timestamps: false },
+    {sequelize, modelName: "delivery_files", timestamps: false},
 );
 
-Delivery.hasMany(DeliveryFile, { foreignKey: "deliveryId", as: "files", onDelete: "CASCADE" });
+Delivery.hasMany(DeliveryFile, {foreignKey: "deliveryId", as: "files", onDelete: "CASCADE"});

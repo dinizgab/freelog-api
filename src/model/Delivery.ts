@@ -50,6 +50,7 @@ Delivery.init(
                 model: "projects",
                 key: "id",
             },
+            onDelete: "CASCADE"
         },
         previious_delivery_id: {
             type: DataTypes.INTEGER,
@@ -58,6 +59,7 @@ Delivery.init(
                 model: "deliveries",
                 key: "id",
             },
+            onDelete: "CASCADE"
         },
         client_review: {
             type: DataTypes.STRING,
