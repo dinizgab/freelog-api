@@ -122,9 +122,4 @@ Project.belongsTo(Client, {
 }
 );
 
-Project.hasMany(Delivery, {
-    foreignKey: "project_id",
-    as: "deliveries",
-    onDelete: "CASCADE"
-})
 
