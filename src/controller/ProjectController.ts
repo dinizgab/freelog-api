@@ -46,7 +46,7 @@ class ProjectController {
                 ? response.status(404).json({ error: 'Projeto não encontrado' })
                 : response.status(200).json(project);
         } catch (error) {
-            console.log(request.params.id)
+            console.log(error)
             return response.status(500).json({msg: 'Erro ao atualizar projeto', error: error});
 
         }
@@ -61,6 +61,7 @@ class ProjectController {
                 ? response.status(404).json({ error: 'Projeto não encontrado' })
                 : response.status(204).send();
         } catch (error) {
+            console.log(error)
             return response.status(500).json({ error: 'Erro ao excluir projeto' });
         }
     }
