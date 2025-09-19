@@ -104,13 +104,12 @@ Delivery.init(
     }
 );
 
-Delivery.belongsTo(Project, {foreignKey: "project_id"});
 Project.hasMany(Delivery, {
     foreignKey: "project_id",
     as: "deliveries",
     onDelete: "CASCADE"
 })
-Delivery.belongsTo(Delivery, {
+Delivery.hasMany(Delivery, {
     as: "previousDelivery",
     foreignKey: "previious_delivery_id",
     onDelete: "CASCADE"

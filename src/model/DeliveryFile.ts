@@ -35,4 +35,3 @@ DeliveryFile.init(
 );
 
 Delivery.hasMany(DeliveryFile, { foreignKey: "deliveryId", as: "files", onDelete: "CASCADE" });
-DeliveryFile.belongsTo(Delivery, { foreignKey: "deliveryId" });
