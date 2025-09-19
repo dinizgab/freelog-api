@@ -97,11 +97,3 @@ Client.belongsTo(
 },
 );
 
-Client.hasMany(
-    Project, {
-    foreignKey: "client_id",
-    as: "projects",
-    onDelete: "CASCADE"
-}
-)
-
