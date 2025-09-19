@@ -1,4 +1,5 @@
 import { mailTransporter } from "../config/mailConfig";
+import { Resend } from 'resend';
 
 export type DeliveryEmailParams = {
     link: string;
@@ -124,33 +125,16 @@ function renderDeliveryEmailHTML(p: DeliveryEmailParams) {
   `.trim();
 }
 
-function renderDeliveryEmailText(p: DeliveryEmailParams) {
-    const { link, clientName, projectName, deliveryVersion, deliveryTitle, freelancerName } = p;
-    return [
-        `Freelog — Nova entrega disponível para revisão`,
-        ``,
-        `Olá ${clientName}, seu projeto foi atualizado.`,
-        ``,
-        `Projeto: ${projectName}`,
-        `Versão: ${deliveryVersion}`,
-        `Título: ${deliveryTitle}`,
-        `Freelancer: ${freelancerName}`,
-        ``,
-        `Acesse para revisar: ${link}`,
-        ``,
-        `Este link expira em 24 horas por motivos de segurança.`,
-    ].join("\n");
-}
-
 export class EmailService {
     static async sendDeliveryEmail(to: string, params: DeliveryEmailParams) {
         const subject = `Entrega do seu projeto — ${params.deliveryTitle} (v${params.deliveryVersion})`;
-        await mailTransporter.sendMail({
-            from: '"Freelog" <no-reply@minhaempresa.com>',
+
+        const resend = new Resend('re_E3Ax9UBP_FcQoCTSma9BrNJvBmAz64aVY');
+        await resend.emails.send({
+            from: 'no_reply@freelog.app',
             to,
-            subject,
-            html: renderDeliveryEmailHTML(params),
-            text: renderDeliveryEmailText(params),
+            subject: subject,
+            html: renderDeliveryEmailHTML(params)
         });
     }
 }
