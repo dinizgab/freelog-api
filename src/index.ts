@@ -9,6 +9,7 @@ import projectRoutes from "./routes/ProjectRoutes";
 import clientRoutes from "./routes/ClientRoutes";
 import deliveryRoutes from "./routes/DeliveryRoutes";
 import aiSuggestionRoutes from "./routes/AISuggestionRoutes";
+import dashboardRoutes from "./routes/DashboardRoutes";
 import cors from "cors";
 
 dotenv.config();
@@ -35,6 +36,7 @@ app.use(clientRoutes)
 app.use(projectRoutes)
 app.use("/deliveries", deliveryRoutes);
 app.use("/ai-suggestions", aiSuggestionRoutes);
+app.use(dashboardRoutes);
 
 setupSwagger(app);
 
