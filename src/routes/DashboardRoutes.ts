@@ -3,6 +3,9 @@ import DashboardController from "../controller/DashboardController";
 
 const router = Router();
 
-router.get("/dashboard/:freelancerId", (req, res) => DashboardController.getDashboard(req, res));
+router.get("/dashboard/:freelancerId", async (req, res) => {
+    await DashboardController.getDashboard(req, res);
+});
+
 
 export default router;
